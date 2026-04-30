@@ -1,0 +1,52 @@
+.root { display: flex; flex-direction: column; min-height: 100vh; }
+
+.header { background: var(--ink); color: var(--paper); position: sticky; top: 0; z-index: 100; }
+
+.headerInner {
+  max-width: 1100px; margin: 0 auto; padding: 0 2rem;
+  height: 56px; display: flex; align-items: center; justify-content: space-between;
+}
+
+.logo {
+  display: flex; align-items: center; gap: 0.6rem;
+  color: var(--paper); font-family: var(--ff-display);
+  font-size: 1.1rem; letter-spacing: 0.01em; transition: opacity 0.15s;
+}
+.logo:hover { opacity: 0.8; }
+.logoIcon { color: var(--accent); font-size: 1.3rem; line-height: 1; }
+
+.nav { display: flex; gap: 1.5rem; align-items: center; }
+.navLink {
+  color: var(--muted); font-size: 0.82rem; letter-spacing: 0.04em;
+  text-transform: uppercase; transition: color 0.15s;
+}
+.navLink:hover { color: var(--paper); }
+
+.hero {
+  max-width: 1100px; margin: 0 auto; padding: 3.5rem 2rem 3rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+
+.heroTitle {
+  font-family: var(--ff-display);
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  line-height: 1.1; color: var(--paper); margin-bottom: 1rem;
+}
+.heroTitle em { font-style: italic; color: var(--accent); }
+.heroSub { color: var(--muted); font-size: 1rem; max-width: 480px; font-weight: 300; }
+
+.main { flex: 1; max-width: 1100px; width: 100%; margin: 0 auto; padding: 2.5rem 2rem; }
+
+.footer {
+  border-top: 1px solid var(--border); padding: 1.25rem 2rem;
+  text-align: center; font-size: 0.8rem; color: var(--muted);
+  display: flex; justify-content: center; gap: 0.75rem;
+}
+.footerDot { opacity: 0.4; }
+.footer a { color: var(--muted); transition: color 0.15s; }
+.footer a:hover { color: var(--ink); }
+
+@media (max-width: 600px) {
+  .heroTitle { font-size: 2rem; }
+  .headerInner, .hero, .main { padding-left: 1rem; padding-right: 1rem; }
+}
