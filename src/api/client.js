@@ -1,34 +1,50 @@
-# Sugar Journal — Frontend
+const BASE = import.meta.env.VITE_API_URL || 'https://fastapi-tv77.onrender.com'
 
-React + Vite frontend for the Sugar Journal AI API.
+async function request(path, options) {
+  const opts = options || {}
+  const res = await fetch(BASE + path, {
+    headers: Object.assign({ 'Content-Type': 'application/json' }, opts.headers || {}),
+    method: opts.method || 'GET',
+    body: opts.body || undefined,
+  })
+  if (!res.ok) {
+    const err = await res.json().catch(function() { return { detail: res.statusText } })
+    throw new Error(err.detail || 'HTTP ' + res.status)
+  }
+  return res.json()
+}
 
-**Backend:** https://fastapi-tv77.onrender.com
+export const api = {
+  listEntries: function(params) {
+    const p = params || {}
+    const q = new URLSearchParams(p).toString()
+    return request('/entries' + (q ? '?' + q : ''))
+  },
 
-## Quick start
+  getEntry: function(uid) {
+    return request('/entries/' + uid)
+  },
 
-\```bash
-npm install
-npm run dev
-\```
+  searchEntries: function(body) {
+    return request('/entries/search', { method: 'POST', body: JSON.stringify(body) })
+  },
 
-Open http://localhost:5173
+  saveEntry: function(entry) {
+    return request('/entries', { method: 'POST', body: JSON.stringify(entry) })
+  },
 
-## Features
+  deleteEntry: function(uid) {
+    return request('/entries/' + uid, { method: 'DELETE' })
+  },
 
-- Journal list with search, activity filter, tag filter, pagination
-- Entry detail with full metadata
-- AI reflection panel on each entry
-- Wired to the live Render backend
+  reflect: function(uids, promptHint) {
+    return request('/reflect', {
+      method: 'POST',
+      body: JSON.stringify({ uids: uids, prompt_hint: promptHint || '' }),
+    })
+  },
 
-## Config
-
-\```bash
-cp .env.example .env.local
-# Edit VITE_API_URL if pointing to a different backend
-\```
-
-## Build
-
-\```bash
-npm run build   # outputs to dist/
-\```
+  insights: function(filters) {
+    return request('/insights', { method: 'POST', body: JSON.stringify(filters || {}) })
+  },
+}
